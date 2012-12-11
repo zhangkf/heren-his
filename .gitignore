@@ -1,0 +1,14 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+.DS_Store
+.gradle/
+.idea/
+build/
+*.iml
+mem.h2.db
+mem.trace.db
