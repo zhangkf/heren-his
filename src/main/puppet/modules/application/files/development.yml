@@ -1,0 +1,7 @@
+database:
+  driver: org.h2.Driver
+  url: jdbc:h2:mem
+  properties:
+    hibernate.hbm2ddl.auto: create-drop
+http:
+  port: 8080
