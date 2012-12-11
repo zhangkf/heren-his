@@ -31,8 +31,10 @@ public class ClinicRegistersResource {
         this.entityManager = entityManager;
         EntityTransaction tx = entityManager.getTransaction();
         tx.begin();
+
         Department department = new Department("呼吸科");
         entityManager.persist(department);
+
         Service service = new Service("普通门诊诊室1", CONSULTING_ROOM, department);
         entityManager.persist(service);
 
@@ -40,6 +42,7 @@ public class ClinicRegistersResource {
         entityManager.persist(new ClinicRegister(service, periodOfValidity, 5));
         entityManager.persist(new ClinicRegister(service, periodOfValidity,10));
         entityManager.persist(new ClinicRegister(service, periodOfValidity,15));
+
         tx.commit();
     }
 
