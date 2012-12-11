@@ -24,7 +24,7 @@ public class PeriodOfValidity {
     @JsonProperty
     private Period period;
 
-    public PeriodOfValidity() {
+    private PeriodOfValidity() {
     }
 
     @JsonCreator

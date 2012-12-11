@@ -1,9 +1,9 @@
 package com.heren.his.register.api;
 
-import com.heren.his.register.domain1.ClinicRegister1;
-import com.heren.his.register.domain1.PeriodOfValidity;
-import com.heren.his.register.domain1.Department;
-import com.heren.his.register.domain1.Service;
+import com.heren.his.register.domain.ClinicRegister;
+import com.heren.his.register.domain.PeriodOfValidity;
+import com.heren.his.register.domain.Department;
+import com.heren.his.register.domain.Service;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.Date;
 import java.util.List;
 
-import static com.heren.his.register.domain1.Service.Type.CONSULTING_ROOM;
+import static com.heren.his.register.domain.Service.Type.CONSULTING_ROOM;
 
 @Singleton
 @Path("/clinic_registers")
@@ -37,29 +37,29 @@ public class ClinicRegistersResource {
         entityManager.persist(service);
 
         PeriodOfValidity periodOfValidity = new PeriodOfValidity(new Date(), PeriodOfValidity.Period.MORNING);
-        entityManager.persist(new ClinicRegister1(service, periodOfValidity, 5));
-        entityManager.persist(new ClinicRegister1(service, periodOfValidity,10));
-        entityManager.persist(new ClinicRegister1(service, periodOfValidity,15));
+        entityManager.persist(new ClinicRegister(service, periodOfValidity, 5));
+        entityManager.persist(new ClinicRegister(service, periodOfValidity,10));
+        entityManager.persist(new ClinicRegister(service, periodOfValidity,15));
         tx.commit();
     }
 
     @GET
     @Path("all")
-    public List<ClinicRegister1> all() {
-        TypedQuery<ClinicRegister1> query = entityManager.createQuery("SELECT r from ClinicRegister1 r", ClinicRegister1.class);
+    public List<ClinicRegister> all() {
+        TypedQuery<ClinicRegister> query = entityManager.createQuery("SELECT r from ClinicRegister r", ClinicRegister.class);
         return query.getResultList();
     }
 
     @GET
     @Path("today")
-    public List<ClinicRegister1> today() {
+    public List<ClinicRegister> today() {
         return available(new Date());
     }
 
     @GET
     @Path("{date}")
-    public List<ClinicRegister1> available(@PathParam("date") Date date) {
-        TypedQuery<ClinicRegister1> query = entityManager.createQuery("SELECT r from ClinicRegister1 r WHERE r.periodOfValidity.validOn = :date", ClinicRegister1.class);
+    public List<ClinicRegister> available(@PathParam("date") Date date) {
+        TypedQuery<ClinicRegister> query = entityManager.createQuery("SELECT r from ClinicRegister r WHERE r.periodOfValidity.validOn = :date", ClinicRegister.class);
         query.setParameter("date", date);
         return query.getResultList();
     }
