@@ -1,0 +1,1 @@
+dbmigration/tool/flyway-commandline-2.0.3/flyway.sh migrate
