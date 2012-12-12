@@ -1,0 +1,1 @@
+gradle deployJar && cp build/libs/deploy.jar . && java -jar deploy.jar 
