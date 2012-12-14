@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        mavenRepo url:'https://github.com/vincentx/i0/raw/master/repository'
+        mavenRepo url:'./repository'
     }
 
     dependencies {
