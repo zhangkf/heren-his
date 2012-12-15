@@ -4,6 +4,10 @@ import com.heren.his.register.domain.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import com.heren.his.register.domain.ClinicRegister;
+import com.heren.his.register.domain.ClinicRegisterType;
+import com.heren.his.register.domain.Department;
+import com.heren.his.register.domain.PeriodOfValidity;
 import java.util.Date;
 
 import static org.hamcrest.core.Is.is;
