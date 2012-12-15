@@ -46,4 +46,8 @@ public class Department {
     public BigDepartment getBigDepartment() {
         return bigDepartment;
     }
+
+    public List<ClinicRegisterType> getClinicRegisterTypes() {
+        return clinicRegisterTypes;
+    }
 }

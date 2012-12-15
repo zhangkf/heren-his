@@ -15,7 +15,7 @@ public class ClinicRegisterCategoryTests extends DomainTests{
     }
 
     @Test
-    public void should_persist_clinicregistercategory(){
+    public void should_persist_clinic_register_category(){
         ClinicRegisterCategory clinicRegisterCategory = new ClinicRegisterCategory("clinic_register_category");
         clinicRegisterCategoryDAO.persist(clinicRegisterCategory);
 
