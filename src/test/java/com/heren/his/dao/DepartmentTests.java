@@ -10,10 +10,13 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class DepartmentTests extends DomainTests{
-    private ClinicRegisterDAO<Department> departmentDAO;
+
+    private final ClinicRegisterDAO<Department> departmentDAO;
+    private final ClinicRegisterDAO<BigDepartment> bigDepartmentDAO;
 
     public DepartmentTests() {
         departmentDAO = new ClinicRegisterDAO<>(entityManager);
+        bigDepartmentDAO = new ClinicRegisterDAO<>(entityManager);
     }
 
     @Test
@@ -31,8 +34,6 @@ public class DepartmentTests extends DomainTests{
     public void should_persit_big_department_and_department(){
 
         BigDepartment bigDepartment = new BigDepartment("big_department");
-
-        ClinicRegisterDAO<BigDepartment> bigDepartmentDAO = new ClinicRegisterDAO<>(entityManager);
         bigDepartmentDAO.persist(bigDepartment);
 
         Department department = new Department("department", bigDepartment);
