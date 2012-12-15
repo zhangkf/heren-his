@@ -4,6 +4,8 @@ import com.heren.his.register.domain.ClinicRegisterType;
 import com.heren.his.register.domain.Department;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -47,9 +49,10 @@ public class ClinicRegisterTypeTests extends DomainTests{
         clearCache();
 
         Department savedDepartment = departmentDAO.load(Department.class, department.getId());
-        assertThat(savedDepartment.getClinicRegisterTypes().size(), is(2));
-        assertThat(savedDepartment.getClinicRegisterTypes().contains(clinicRegisterType1), is(true));
-        assertThat(savedDepartment.getClinicRegisterTypes().contains(clinicRegisterType2), is(true));
+        List<ClinicRegisterType> clinicRegisterTypes = savedDepartment.getClinicRegisterTypes();
+        assertThat(clinicRegisterTypes.size(), is(2));
+        assertThat(clinicRegisterTypes.contains(clinicRegisterType1), is(true));
+        assertThat(clinicRegisterTypes.contains(clinicRegisterType2), is(true));
 
     }
 }

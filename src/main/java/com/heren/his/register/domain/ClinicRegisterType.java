@@ -1,6 +1,7 @@
 package com.heren.his.register.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class ClinicRegisterType {
@@ -15,6 +16,10 @@ public class ClinicRegisterType {
 
     public Department getDepartment() {
         return department;
+    }
+
+    public Set<ClinicRegister> getClinicRegisters() {
+        return clinicRegisters;
     }
 
     public static enum Type {
@@ -35,6 +40,9 @@ public class ClinicRegisterType {
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     private ClinicRegisterCategory clinicRegisterCategory;
+
+    @OneToMany(mappedBy = "clinicRegisterType")
+    private Set<ClinicRegister> clinicRegisters;
 
     private String digitCode;
 
