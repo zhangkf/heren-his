@@ -32,15 +32,23 @@ public class ClinicRegister {
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JsonProperty
-    private ClinicRegisterType service;
+    private ClinicRegisterType clinicRegisterType;
 
     private ClinicRegister() {
     }
 
-    public ClinicRegister(ClinicRegisterType service, PeriodOfValidity periodOfValidity, int scheduled) {
+    public ClinicRegister(ClinicRegisterType clinicRegisterType, PeriodOfValidity periodOfValidity, int scheduled) {
         this.scheduled = scheduled;
         this.periodOfValidity = periodOfValidity;
-        this.service = service;
+        this.clinicRegisterType = clinicRegisterType;
+    }
+
+    public ClinicRegister(int scheduled, int left, boolean stopStatus, PeriodOfValidity periodOfValidity, ClinicRegisterType clinicRegisterType) {
+        this.scheduled = scheduled;
+        this.left = left;
+        this.stopStatus = stopStatus;
+        this.periodOfValidity = periodOfValidity;
+        this.clinicRegisterType = clinicRegisterType;
     }
 
     public static void main(String... arguments) {
@@ -54,5 +62,13 @@ public class ClinicRegister {
         ClinicRegister 普通门诊诊室2号池 = new ClinicRegister(普通门诊诊室2, new PeriodOfValidity(new Date(), MORNING), 35);
         ClinicRegister 张大夫号池 = new ClinicRegister(张大夫, new PeriodOfValidity(new Date(), MORNING), 15);
         ClinicRegister 李大夫号池 = new ClinicRegister(李大夫, new PeriodOfValidity(new Date(), MORNING), 25);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public ClinicRegisterType getClinicRegisterType() {
+        return clinicRegisterType;
     }
 }
