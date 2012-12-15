@@ -1,5 +1,6 @@
 package com.heren.his.register.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -43,6 +44,7 @@ public class ClinicRegister {
         this.clinicRegisterType = clinicRegisterType;
     }
 
+    @JsonCreator
     public ClinicRegister(ClinicRegisterType clinicRegisterType, PeriodOfValidity periodOfValidity, int scheduled, int left, boolean stopStatus) {
         this.scheduled = scheduled;
         this.left = left;

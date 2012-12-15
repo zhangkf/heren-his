@@ -1,5 +1,8 @@
 package com.heren.his.register.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -30,11 +33,13 @@ public class ClinicRegisterType {
     @GeneratedValue
     private long id;
 
+    @JsonProperty
     private String name;
 
     @Enumerated(EnumType.STRING)
     private Type type;
 
+    @JsonProperty
     @ManyToOne(cascade = CascadeType.REFRESH)
     private Department department;
 
@@ -42,10 +47,13 @@ public class ClinicRegisterType {
     private ClinicRegisterCategory clinicRegisterCategory;
 
     @OneToMany(mappedBy = "clinicRegisterType")
+    @JsonIgnore
     private Set<ClinicRegister> clinicRegisters;
 
+    @JsonProperty
     private String digitCode;
 
+    @JsonProperty
     private String pingyinCode;
 
     private ClinicRegisterType() {

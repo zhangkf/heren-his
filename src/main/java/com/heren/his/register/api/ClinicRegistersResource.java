@@ -1,24 +1,20 @@
 package com.heren.his.register.api;
 
-import com.heren.his.register.domain.ClinicRegister;
-import com.heren.his.register.domain.ClinicRegisterType;
-import com.heren.his.register.domain.PeriodOfValidity;
-import com.heren.his.register.domain.Department;
+import com.heren.his.dao.ClinicRegisterDAO;
+import com.heren.his.register.domain.*;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static com.heren.his.register.domain.ClinicRegisterType.Type.CONSULTING_ROOM;
 
 @Singleton
 @Path("/clinic_registers")
@@ -26,31 +22,68 @@ import static com.heren.his.register.domain.ClinicRegisterType.Type.CONSULTING_R
 public class ClinicRegistersResource {
     private EntityManager entityManager;
 
+    private final ClinicRegisterDAO<Department> departmentDAO;
+    private final ClinicRegisterDAO<ClinicRegisterType> clinicRegisterTypeDAO;
+    private final ClinicRegisterDAO<ClinicRegister> clinicRegisterDAO;
+    private final ClinicRegisterDAO<BigDepartment> bigDepartmentDAO;
+
     @Inject
     public ClinicRegistersResource(EntityManager entityManager) {
         this.entityManager = entityManager;
-        EntityTransaction tx = this.entityManager.getTransaction();
-        tx.begin();
+        departmentDAO = new ClinicRegisterDAO<>(entityManager);
+        clinicRegisterTypeDAO = new ClinicRegisterDAO<>(entityManager);
+        clinicRegisterDAO = new ClinicRegisterDAO<>(entityManager);
+        bigDepartmentDAO = new ClinicRegisterDAO<>(entityManager);
 
-        Department department = new Department("呼吸科");
-        this.entityManager.persist(department);
 
-        ClinicRegisterType service = new ClinicRegisterType("普通门诊诊室1", CONSULTING_ROOM, department);
-        this.entityManager.persist(service);
-
-        PeriodOfValidity periodOfValidity = new PeriodOfValidity(new Date(), PeriodOfValidity.Period.MORNING);
-        this.entityManager.persist(new ClinicRegister(service, periodOfValidity, 5));
-        this.entityManager.persist(new ClinicRegister(service, periodOfValidity,10));
-        this.entityManager.persist(new ClinicRegister(service, periodOfValidity,15));
-
-        tx.commit();
     }
 
     @GET
     @Path("all")
     public List<ClinicRegister> all() {
-        TypedQuery<ClinicRegister> query = entityManager.createQuery("SELECT r from ClinicRegister r", ClinicRegister.class);
-        return query.getResultList();
+        long bigDepartmentId = prepareData();
+        ArrayList<ClinicRegister> clinicRegisters = new ArrayList<>();
+        entityManager.clear();
+        BigDepartment savedBigDepartment = bigDepartmentDAO.load(BigDepartment.class, bigDepartmentId);
+        for (Department _department : savedBigDepartment.getDepartments()) {
+            for (ClinicRegisterType clinicRegisterType : _department.getClinicRegisterTypes()) {
+                for (ClinicRegister clinicRegister : clinicRegisterType.getClinicRegisters()) {
+                    clinicRegisters.add(clinicRegister);
+                }
+            }
+        }
+
+        //TypedQuery<ClinicRegister> query = entityManager.createQuery("SELECT r from ClinicRegister r", ClinicRegister.class);
+        //return query.getResultList();
+        return clinicRegisters;
+    }
+
+    private long prepareData(){
+
+        BigDepartment bigDepartment = new BigDepartment("big_department");
+        bigDepartmentDAO.persist(bigDepartment);
+
+        Department department = new Department("department", bigDepartment);
+        departmentDAO.persist(department);
+
+        ClinicRegisterType clinicRegisterType1= new ClinicRegisterType("clinic_register_type1", ClinicRegisterType.Type.EXPERT, department, "digitCode1", "pinyinCode1");
+        clinicRegisterTypeDAO.persist(clinicRegisterType1);
+
+        ClinicRegisterType clinicRegisterType2 = new ClinicRegisterType("clinic_register_type2", ClinicRegisterType.Type.CONSULTING_ROOM, department, "digitCode2", "pinyinCode2");
+        clinicRegisterTypeDAO.persist(clinicRegisterType2);
+
+        ClinicRegister clinicRegister1 = new ClinicRegister(clinicRegisterType1, new PeriodOfValidity(new Date(), PeriodOfValidity.Period.MORNING), 20, 20, false);
+        clinicRegisterDAO.persist(clinicRegister1);
+        ClinicRegister clinicRegister2 = new ClinicRegister(clinicRegisterType1, new PeriodOfValidity(new Date(), PeriodOfValidity.Period.AFTERNOON), 10, 10, false);
+        clinicRegisterDAO.persist(clinicRegister2);
+
+        ClinicRegister clinicRegister3 = new ClinicRegister(clinicRegisterType2, new PeriodOfValidity(new Date(), PeriodOfValidity.Period.MORNING), 20, 20, false);
+        clinicRegisterDAO.persist(clinicRegister3);
+        ClinicRegister clinicRegister4 = new ClinicRegister(clinicRegisterType2, new PeriodOfValidity(new Date(), PeriodOfValidity.Period.AFTERNOON), 10, 10, false);
+        clinicRegisterDAO.persist(clinicRegister4);
+
+        return bigDepartment.getId();
+
     }
 
     @GET

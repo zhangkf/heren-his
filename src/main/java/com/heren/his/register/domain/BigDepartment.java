@@ -1,5 +1,7 @@
 package com.heren.his.register.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,6 +19,7 @@ public class BigDepartment {
     private String name;
 
     @OneToMany(mappedBy = "bigDepartment")
+    @JsonIgnore
     private Set<Department> departments;
 
     public BigDepartment(String name) {
