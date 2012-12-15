@@ -5,15 +5,17 @@
     <persistence-unit name="domain" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <class>com.heren.his.register.domain.ClinicRegister</class>
+        <class>com.heren.his.register.domain.ClinicRegisterType</class>
         <class>com.heren.his.register.domain.PeriodOfValidity</class>
         <class>com.heren.his.register.domain.Department</class>
-        <class>com.heren.his.register.domain.ClinicRegisterType</class>
-        <!--<properties>-->
-            <!--<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>-->
-            <!--<property name="hibernate.connection.driver_class" value="org.h2.Driver"/>-->
-            <!--<property name="hibernate.connection.url" value="jdbc:h2:mem"/>-->
-            <!--<property name="hibernate.hbm2ddl.auto" value="create-drop"/>-->
-            <!--<property name="hibernate.show_sql" value="true"/>-->
-        <!--</properties>-->
+        <class>com.heren.his.register.domain.BigDepartment</class>
+        <class>com.heren.his.register.domain.ClinicRegisterCategory</class>
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
+            <property name="hibernate.connection.url" value="jdbc:h2:mem"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.show_sql" value="true"/>
+        </properties>
     </persistence-unit>
 </persistence>

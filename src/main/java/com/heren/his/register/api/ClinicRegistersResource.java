@@ -29,19 +29,19 @@ public class ClinicRegistersResource {
     @Inject
     public ClinicRegistersResource(EntityManager entityManager) {
         this.entityManager = entityManager;
-        EntityTransaction tx = entityManager.getTransaction();
+        EntityTransaction tx = this.entityManager.getTransaction();
         tx.begin();
 
         Department department = new Department("呼吸科");
-        entityManager.persist(department);
+        this.entityManager.persist(department);
 
         ClinicRegisterType service = new ClinicRegisterType("普通门诊诊室1", CONSULTING_ROOM, department);
-        entityManager.persist(service);
+        this.entityManager.persist(service);
 
         PeriodOfValidity periodOfValidity = new PeriodOfValidity(new Date(), PeriodOfValidity.Period.MORNING);
-        entityManager.persist(new ClinicRegister(service, periodOfValidity, 5));
-        entityManager.persist(new ClinicRegister(service, periodOfValidity,10));
-        entityManager.persist(new ClinicRegister(service, periodOfValidity,15));
+        this.entityManager.persist(new ClinicRegister(service, periodOfValidity, 5));
+        this.entityManager.persist(new ClinicRegister(service, periodOfValidity,10));
+        this.entityManager.persist(new ClinicRegister(service, periodOfValidity,15));
 
         tx.commit();
     }

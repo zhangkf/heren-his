@@ -15,7 +15,7 @@ public class Department {
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<ClinicRegisterType> clinicRegisterTypes;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     private BigDepartment bigDepartment;
 
     private Department() {
@@ -26,7 +26,24 @@ public class Department {
         this.clinicRegisterTypes = new ArrayList<>();
     }
 
+    public Department(String name, BigDepartment bigDepartment) {
+        this.name = name;
+        this.bigDepartment = bigDepartment;
+    }
+
     public void addClinicRegisterType(ClinicRegisterType clinicRegisterType) {
         clinicRegisterTypes.add(clinicRegisterType);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public BigDepartment getBigDepartment() {
+        return bigDepartment;
     }
 }

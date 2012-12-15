@@ -8,5 +8,7 @@
         <class>com.heren.his.register.domain.ClinicRegisterType</class>
         <class>com.heren.his.register.domain.PeriodOfValidity</class>
         <class>com.heren.his.register.domain.Department</class>
+        <class>com.heren.his.register.domain.BigDepartment</class>
+        <class>com.heren.his.register.domain.ClinicRegisterCategory</class>
     </persistence-unit>
 </persistence>
