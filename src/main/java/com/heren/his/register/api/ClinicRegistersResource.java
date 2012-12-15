@@ -1,9 +1,9 @@
 package com.heren.his.register.api;
 
 import com.heren.his.register.domain.ClinicRegister;
+import com.heren.his.register.domain.ClinicRegisterType;
 import com.heren.his.register.domain.PeriodOfValidity;
 import com.heren.his.register.domain.Department;
-import com.heren.his.register.domain.Service;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.Date;
 import java.util.List;
 
-import static com.heren.his.register.domain.Service.Type.CONSULTING_ROOM;
+import static com.heren.his.register.domain.ClinicRegisterType.Type.CONSULTING_ROOM;
 
 @Singleton
 @Path("/clinic_registers")
@@ -35,7 +35,7 @@ public class ClinicRegistersResource {
         Department department = new Department("呼吸科");
         entityManager.persist(department);
 
-        Service service = new Service("普通门诊诊室1", CONSULTING_ROOM, department);
+        ClinicRegisterType service = new ClinicRegisterType("普通门诊诊室1", CONSULTING_ROOM, department);
         entityManager.persist(service);
 
         PeriodOfValidity periodOfValidity = new PeriodOfValidity(new Date(), PeriodOfValidity.Period.MORNING);

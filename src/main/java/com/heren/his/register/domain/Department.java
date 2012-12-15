@@ -13,17 +13,20 @@ public class Department {
     private String name;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<Service> services;
+    private List<ClinicRegisterType> clinicRegisterTypes;
+
+    @ManyToOne
+    private BigDepartment bigDepartment;
 
     private Department() {
     }
 
     public Department(String name) {
         this.name = name;
-        this.services = new ArrayList<>();
+        this.clinicRegisterTypes = new ArrayList<>();
     }
 
-    public void addService(Service service) {
-        services.add(service);
+    public void addClinicRegisterType(ClinicRegisterType clinicRegisterType) {
+        clinicRegisterTypes.add(clinicRegisterType);
     }
 }
