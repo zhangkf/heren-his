@@ -5,7 +5,7 @@ import com.heren.his.register.domain.*;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -19,7 +19,8 @@ import java.util.List;
 @Path("/clinic_register")
 @Produces(MediaType.APPLICATION_JSON)
 public class ClinicRegistersResource {
-    private EntityManager entityManager;
+
+    private EntityManagerFactory entityManagerFactory;
 
     private final ClinicRegisterDAO<Department> departmentDAO;
     private final ClinicRegisterDAO<ClinicRegisterType> clinicRegisterTypeDAO;
@@ -27,26 +28,26 @@ public class ClinicRegistersResource {
     private final ClinicRegisterDAO<BigDepartment> bigDepartmentDAO;
 
     @Inject
-    public ClinicRegistersResource(EntityManager entityManager) {
-        this.entityManager = entityManager;
-        departmentDAO = new ClinicRegisterDAO<>(entityManager);
-        clinicRegisterTypeDAO = new ClinicRegisterDAO<>(entityManager);
-        clinicRegisterDAO = new ClinicRegisterDAO<>(entityManager);
-        bigDepartmentDAO = new ClinicRegisterDAO<>(entityManager);
+    public ClinicRegistersResource(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
+        departmentDAO = new ClinicRegisterDAO<>(entityManagerFactory.createEntityManager());
+        clinicRegisterTypeDAO = new ClinicRegisterDAO<>(entityManagerFactory.createEntityManager());
+        clinicRegisterDAO = new ClinicRegisterDAO<>(entityManagerFactory.createEntityManager());
+        bigDepartmentDAO = new ClinicRegisterDAO<>(entityManagerFactory.createEntityManager());
     }
 
     @GET
     @Path("bigDepartments")
     public List<BigDepartment> bigDepartments(){
         prepareData();
-        TypedQuery<BigDepartment> query = entityManager.createQuery("select bd from BigDepartment bd", BigDepartment.class);
+        TypedQuery<BigDepartment> query = entityManagerFactory.createEntityManager().createQuery("select bd from BigDepartment bd", BigDepartment.class);
         return query.getResultList();
     }
 
     @GET
     @Path("bigDepartment/{bigDepartmentId}/departments")
     public List<Department> allByBigDepartment(@PathParam("bigDepartmentId") long bigDepartmentId){
-        TypedQuery<Department> query = entityManager.createQuery("select d from Department d where d.bigDepartment.id = :bigDepartmentId", Department.class);
+        TypedQuery<Department> query = entityManagerFactory.createEntityManager().createQuery("select d from Department d where d.bigDepartment.id = :bigDepartmentId", Department.class);
         query.setParameter("bigDepartmentId", bigDepartmentId);
         return query.getResultList();
     }
@@ -55,7 +56,7 @@ public class ClinicRegistersResource {
     @GET
     @Path("department/{departmentId}/all")
     public List<ClinicRegister> allByDepartment(@PathParam("departmentId") long departmentId){
-        TypedQuery<ClinicRegister> query = entityManager.createQuery("select r from ClinicRegister r where r.clinicRegisterType.department.id = :departmentId", ClinicRegister.class);
+        TypedQuery<ClinicRegister> query = entityManagerFactory.createEntityManager().createQuery("select r from ClinicRegister r where r.clinicRegisterType.department.id = :departmentId", ClinicRegister.class);
         query.setParameter("departmentId", departmentId);
         return query.getResultList();
     }
@@ -64,7 +65,7 @@ public class ClinicRegistersResource {
     @GET
     @Path("all")
     public List<ClinicRegister> all() {
-        TypedQuery<ClinicRegister> query = entityManager.createQuery("SELECT r from ClinicRegister r", ClinicRegister.class);
+        TypedQuery<ClinicRegister> query = entityManagerFactory.createEntityManager().createQuery("SELECT r from ClinicRegister r", ClinicRegister.class);
         return query.getResultList();
     }
 
@@ -77,7 +78,7 @@ public class ClinicRegistersResource {
     @GET
     @Path("{date}")
     public List<ClinicRegister> available(@PathParam("date") Date date) {
-        TypedQuery<ClinicRegister> query = entityManager.createQuery("SELECT r from ClinicRegister r WHERE r.periodOfValidity.validOn = :date", ClinicRegister.class);
+        TypedQuery<ClinicRegister> query = entityManagerFactory.createEntityManager().createQuery("SELECT r from ClinicRegister r WHERE r.periodOfValidity.validOn = :date", ClinicRegister.class);
         query.setParameter("date", date);
         return query.getResultList();
     }
