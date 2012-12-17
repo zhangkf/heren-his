@@ -85,10 +85,10 @@ public class ClinicRegistersResource {
 
     private long prepareData(){
 
-        BigDepartment bigDepartment = new BigDepartment("big_department");
+        BigDepartment bigDepartment = new BigDepartment("大部门");
         bigDepartmentDAO.persist(bigDepartment);
 
-        Department department = new Department("department", bigDepartment);
+        Department department = new Department("部门", bigDepartment);
         departmentDAO.persist(department);
 
         ClinicRegisterType clinicRegisterType1= new ClinicRegisterType("clinic_register_type1", ClinicRegisterType.Type.EXPERT, department, "digitCode1", "pinyinCode1");
